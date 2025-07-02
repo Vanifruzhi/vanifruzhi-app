@@ -1,0 +1,47 @@
+{
+  "sinopsis": "Yazawa es un delincuente juvenil que sueña con ser el número uno entre los pandilleros. En su camino por cumplir su objetivo, se ve envuelto en situaciones absurdas, combates callejeros y muchas locuras. ¡Una comedia irreverente con toques de acción y mucho estilo!",
+  "episodes": [
+    {
+      "id": 1,
+      "title": "Ova 1: ¡Yazawa está aquí!",
+      "description": "Yazawa aparece en escena para imponer su estilo único.",
+      "img": "https://pbs.twimg.com/media/GubkthdW4AEifur?format=jpg&name=large",
+      "link": "chameleon01.html"
+    },
+    {
+      "id": 2,
+      "title": "Ova 2: Hermanos del infierno",
+      "description": "Los hermanos más temidos de la ciudad hacen su jugada.",
+      "img": "https://pbs.twimg.com/media/GublkBNXYAAPDcP?format=jpg&name=large",
+      "link": "chameleon02.html"
+    },
+    {
+      "id": 3,
+      "title": "Ova 3: Lazos del asesino a sueldo",
+      "description": "Yazawa debe enfrentarse a su pasado oscuro.",
+      "img": "https://pbs.twimg.com/media/GudAXSUWcAAbuqH?format=jpg&name=large",
+      "link": "chameleon03.html"
+    },
+{
+      "id": 4,
+      "title": "Ova 4: Un infernal uno vs uno",
+      "description": "Una salida nocturna termina en una persecución.",
+      "img": "https://pbs.twimg.com/media/GudAa6uWQAAsYs_?format=jpg&name=large",
+      "link": "chameleon04.html"
+    },
+{
+      "id": 5,
+      "title": "Ova 5: Gran pelea en el congelador",
+      "description": "Una salida nocturna termina en una persecución.",
+      "img": "https://pbs.twimg.com/media/GudAeoEXgAAizgA?format=jpg&name=large",
+      "link": "chameleon04.html"
+    },
+{
+      "id": 6,
+      "title": "Ova 6: Yazawa vs Hnos. Matsuoka",
+      "description": "Una salida nocturna termina en una persecución.",
+      "img": "https://pbs.twimg.com/media/GudAioWXUAACUEL?format=jpg&name=large",
+      "link": "chameleon04.html"
+    }
+  ]
+}

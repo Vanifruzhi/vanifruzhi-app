@@ -1,0 +1,19 @@
+{
+  "sinopsis": "Cada cierto tiempo la Mamamega de turno debe purificar un ítem mágico creado por los Dioses llamado Astro Star, el cual absorbe la maldad del mundo que hay afuera hasta que se llena. Una vez purificado le pasa el título a una sucesora. La mujer que está a punto de convertirse en la próxima Mamamega debe elegir a unas sacerdotisas para que la acompañen y empieza con una chica llamada Lilith, que no puede creer que la hayan seleccionado. Lilith va en busca de las otras dos sacerdotisas pero estas no quieren saber nada. El tema es que en ese momento la ciudad es invadida por varias chicas al servicio de la contraparte maligna de Mamamega, cuya misión es destruir el Astro Star.",
+  "episodes": [
+    {
+      "id": 1,
+      "title": "Ova 1: ¡Reúnanse Doncellas del Santuario de Mamamega!",
+      "description": "N/A",
+      "img": "https://pbs.twimg.com/media/Gul9qELXkAAdQ89?format=jpg&name=large",
+      "link": "megami-paradise01.html"
+    },
+    {
+      "id": 2,
+      "title": "Ova 2: ¡El ataque de Yamimama!",
+      "description": "N/A",
+      "img": "https://pbs.twimg.com/media/Gul9sioXMAADzzo?format=jpg&name=large",
+      "link": "megami-paradise02.html"
+    }
+  ]
+}
