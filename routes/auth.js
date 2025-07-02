@@ -27,6 +27,7 @@ router.post('/register', async (req, res) => {
         res.status(201).json({ message: 'Cuenta creada con éxito.' });
 
     } catch (error) {
+        console.error("Error en el registro:", error);
         res.status(500).json({ message: 'Error en el servidor', error });
     }
 });
@@ -60,6 +61,7 @@ router.post('/login', async (req, res) => {
         });
 
     } catch (error) {
+        console.error("Error en el login:", error);
         res.status(500).json({ message: 'Error en el servidor', error });
     }
 });
