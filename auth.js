@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // La URL de tu backend. Cuando lo despliegues, cambiarás esto.
-    const API_URL = 'http://localhost:5000/api/auth';
+    // CAMBIA ESTA URL POR LA URL PÚBLICA DE TU BACKEND EN RENDER
+    const API_URL = 'https://vanifruzhiapp-backend.onrender.com/api/auth'; // <-- ¡VERIFICA ESTA URL!
 
     const registerForm = document.getElementById('registerForm');
     const loginForm = document.getElementById('loginForm');
@@ -10,23 +10,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            errorMessage.textContent = ''; // Limpiar errores previos
+            errorMessage.textContent = '';
             
-            const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            if (password !== confirmPassword) {
-                errorMessage.textContent = 'Las contraseñas no coinciden.';
-                return;
-            }
 
             try {
                 const response = await fetch(`${API_URL}/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, email, password })
+                    body: JSON.stringify({ email, password })
                 });
 
                 const data = await response.json();
@@ -35,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error(data.message || 'Error en el registro.');
                 }
 
-                alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
+                alert('¡Cuenta creada con éxito! Ahora puedes iniciar sesión.');
                 window.location.href = 'login.html';
 
             } catch (error) {
@@ -48,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            errorMessage.textContent = ''; // Limpiar errores previos
+            errorMessage.textContent = '';
 
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -70,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('authToken', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
 
-                alert(data.message);
                 window.location.href = 'index.html';
 
             } catch (error) {
