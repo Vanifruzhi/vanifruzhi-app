@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // CAMBIA ESTA URL POR LA URL PÚBLICA DE TU BACKEND EN RENDER
-    const API_URL = 'https://vanifruzhiapp-backend.onrender.com/api/auth'; // <-- ¡VERIFICA ESTA URL!
+    const API_URL = 'https://vanifruzhiapp-backend.onrender.com/api/auth'; // <-- ¡VERIFICA QUE ESTA URL SEA LA TUYA!
 
     const registerForm = document.getElementById('registerForm');
     const loginForm = document.getElementById('loginForm');
