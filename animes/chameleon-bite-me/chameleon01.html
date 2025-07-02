@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bite me! Chameleon- Ova 1</title>
+  <style>
+    body { margin:0; background:#121212; color:#fff; font-family:sans-serif; padding-bottom:60px; }
+    header { background:#e812be; padding:1rem; text-align:center; position:sticky; top:0; z-index:999; }
+    h1 { font-size:1.2rem; }
+    .video-container { position:relative; width:100%; padding-bottom:56.25%; height:0; overflow:hidden; background:#000; }
+    .video-container iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:0; }
+    .server-select { display:flex; gap:.5rem; justify-content:center; margin:1rem; flex-wrap:wrap; }
+    .server-select button { background:#2a2a2a; color:#fff; border:none; padding:.5rem 1rem; border-radius:4px; cursor:pointer; }
+    .server-select button.active { background:#e812be; }
+    .info { padding:1rem; }
+    .actions { display:flex; gap:1rem; margin-top:1rem; flex-wrap: wrap; }
+    .actions button { background:#e812be; border:none; padding:0.5rem 1rem; color:#fff; border-radius:6px; cursor:pointer; flex:1; min-width:120px; }
+    .error-msg { text-align:center; color:#f66; margin:0.5rem 1rem; font-size:0.9rem; display:none; }
+ 
+  /* --- BOTTOM NAVIGATION BAR --- */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    z-index: 999;
+  }
+
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+  }
+
+  .bottom-nav a:hover {
+    opacity: 1;
+  }
+
+  .bottom-nav img {
+    width: 25px;
+    height: 25px;
+    filter: brightness(0) invert(1);
+  }
+  .bottom-nav a:hover img {
+    filter: brightness(0) saturate(100%) invert(20%) sepia(80%) saturate(800%) hue-rotate(280deg) brightness(1.2);
+  }
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Bite me! Chameleon - Ova 01</h1>
+  </header>
+
+  <div class="server-select">
+    <button onclick="changeServer('drive')" class="active" id="btnDrive">Servidor 1 (Drive)</button>
+    <button onclick="changeServer('mega')" id="btnMega">Servidor 2 (Mega)</button>
+    <button onclick="changeServer('voe')" id="btnVoe">Servidor 3 (Voe)</button>
+    <button onclick="changeServer('okru')" id="btnOkru">Servidor 4 (Ok.ru)</button>
+  </div>
+
+  <div class="video-container">
+    <iframe id="externalPlayer" src="https://drive.google.com/file/d/1zqXkaRd4t6Pu3dClItXt7a1KlPoBLhsW/preview" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+  </div>
+
+  <div class="error-msg" id="errorMsg">Error al cargar el video. Intenta con otro servidor.</div>
+
+  <div class="info">
+    <h2>Sinopsis</h2>
+    <p>En el primer episodio, conocemos a Naruto Uzumaki, un joven ninja con el sueño de convertirse en Hokage, el líder de su aldea. Sin embargo, Naruto es ignorado por los demás debido al demonio zorro que lleva sellado en su interior.</p>
+    <div class="actions">
+      <button onclick="nextEpisode()">Siguiente episodio</button>
+      <button onclick="downloadEpisode()">Descargar</button>
+      <button onclick="shareEpisode()">Compartir</button>
+    </div>
+  </div>
+
+  <script>
+    const player = document.getElementById('externalPlayer');
+    const errorMsg = document.getElementById('errorMsg');
+    const buttons = {
+      drive: document.getElementById('btnDrive'),
+      mega: document.getElementById('btnMega'),
+      voe: document.getElementById('btnVoe'),
+      okru: document.getElementById('btnOkru')
+    };
+
+    const sources = {
+      drive: 'https://drive.google.com/file/d/1zqXkaRd4t6Pu3dClItXt7a1KlPoBLhsW/preview',
+      mega: 'https://mega.nz/embed/ALtE1b4Y#UBspd8AR-QH19jy8SURN3mbqTbIQ1wmbFm90oBuvxK8',
+      voe: 'https://voe.sx/e/6vk2j3wnoadh',
+      okru: 'https://ok.ru/videoembed/230121342390?nochat=1'
+    };
+
+    function changeServer(server) {
+      Object.keys(buttons).forEach(key => buttons[key].classList.remove('active'));
+      buttons[server].classList.add('active');
+
+      errorMsg.style.display = 'none';
+      try {
+        player.src = sources[server];
+      } catch (e) {
+        errorMsg.style.display = 'block';
+      }
+
+      setTimeout(() => {
+        if (!player.contentWindow) {
+          errorMsg.style.display = 'block';
+        }
+      }, 3000);
+    }
+
+    function nextEpisode() {
+      window.location.href = 'chameleon02.html';
+    }
+
+    function downloadEpisode() {
+      window.open('https://drive.google.com/uc?id=1xUVEliKjZaWqIDYyZPJbOjo5BSjRZZz0&export=download', '_blank');
+    }
+
+    function shareEpisode() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Naruto - Episodio 1',
+          url: window.location.href
+        });
+      } else {
+        alert("Tu navegador no permite compartir.");
+      }
+    }
+  </script>
+
+ <nav class="bottom-nav">
+    <a href="../../index.html"><img src="../../inicio.png" alt="Inicio"></a>
+    <a href="../../repertorio.html"><img src="https://img.icons8.com/?size=100&id=8113&format=png&color=000000" alt="Repertorio"></a>
+    <a href="../../notificaciones.html"><img src="https://img.icons8.com/?size=100&id=3334&format=png&color=000000" alt="Notificaciones"></a>
+    <a href="../../perfil.html"><img src="../../usuario.png" alt="Usuario"></a>
+  </nav>
+
+</body>
+</html>
