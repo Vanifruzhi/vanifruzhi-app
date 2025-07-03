@@ -1,0 +1,359 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #121212;
+      color: white;
+      padding: 1rem;
+      padding-bottom: 80px;
+    }
+    
+    h1 {
+      text-align: center;
+      color: white;
+      margin-bottom: 2rem;
+    }
+
+    .perfil {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .foto-preview {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #e812be;
+      margin-bottom: 1rem;
+      background-color: #333;
+    }
+
+    .upload-label {
+        cursor: pointer;
+        background-color: #333;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        transition: background-color 0.2s;
+    }
+    .upload-label:hover {
+        background-color: #444;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .nombre-input {
+      margin-bottom: 1rem;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #555;
+      background: #222;
+      color: white;
+      text-align: center;
+      font-size: 1.1rem;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .bienvenida {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #F47521;
+    }
+
+    /* --- NUEVA SECCIÓN DE GESTIÓN DE DATOS --- */
+    .data-management-card {
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        padding: 1.5rem;
+        max-width: 500px;
+        margin: 2rem auto 0 auto;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .data-management-card h2 {
+        text-align: center;
+        color: #e812be;
+        margin-bottom: 1rem;
+    }
+
+    .warning-text {
+        background-color: rgba(244, 117, 33, 0.1);
+        border-left: 4px solid #F47521;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: #f0f0f0;
+        border-radius: 0 5px 5px 0;
+    }
+    
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .data-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1rem;
+        transition: transform 0.2s, background-color 0.2s;
+    }
+    .data-btn:hover {
+        transform: scale(1.03);
+    }
+    .data-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    #exportarBtn {
+        background-color: #1a73e8;
+    }
+    #exportarBtn:hover {
+        background-color: #1765c7;
+    }
+
+    #importarBtn {
+        background-color: #34a853;
+    }
+    #importarBtn:hover {
+        background-color: #2e9346;
+    }
+
+    /* --- NUEVO ESTILO PARA EL BOTÓN DE CERRAR SESIÓN --- */
+    #logoutBtn {
+        background-color: #d9534f; /* Un rojo distintivo */
+        margin-top: 1rem; /* Espacio extra arriba */
+    }
+    #logoutBtn:hover {
+        background-color: #c9302c;
+    }
+
+
+    /* --- BARRA DE NAVEGACIÓN INFERIOR --- */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background-color: rgba(0,0,0,0.6);
+      backdrop-filter: blur(5px);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      z-index: 999;
+    }
+    .bottom-nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .bottom-nav img {
+      width: 25px;
+      height: 25px;
+      filter: brightness(0) invert(1);
+    }
+  </style>
+</head>
+<body>
+  <!-- GUARDIÁN DE AUTENTICACIÓN: Sigue protegiendo la página -->
+  <script>
+    if (!localStorage.getItem('authToken')) {
+      window.location.href = '/login.html';
+    }
+  </script>
+
+  <h1>Tu Perfil</h1>
+
+  <div class="perfil">
+    <img id="fotoPreview" class="foto-preview" src="https://via.placeholder.com/120" alt="Foto de perfil" />
+    <label for="fotoInput" class="upload-label">Cambiar foto</label>
+    <input type="file" id="fotoInput" accept="image/*">
+    <input type="text" id="nombreInput" class="nombre-input" placeholder="Escribe tu nombre">
+    <div class="bienvenida" id="bienvenida"></div>
+  </div>
+
+  <!-- SECCIÓN DE GESTIÓN DE DATOS MEJORADA -->
+  <div class="data-management-card">
+    <h2>Gestión de Datos Locales</h2>
+    <p class="warning-text">
+      <strong>¡Importante!</strong> Tus favoritos, historial y datos de perfil se guardan en este navegador. Para evitar perderlos, exporta tus datos regularmente y guárdalos en un lugar seguro.
+    </p>
+    <div class="button-container">
+        <button id="exportarBtn" class="data-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16.5l-6-6h4V2h4v8.5h4l-6 6zM4 19h16v2H4v-2z"/></svg>
+            Exportar mis datos
+        </button>
+        <label>
+            <input type="file" id="importInput" accept=".json" />
+            <button id="importarBtn" class="data-btn" onclick="document.getElementById('importInput').click();">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7.5l-6 6h4v8.5h4V13.5h4l-6-6zM4 5h16v2H4V5z"/></svg>
+                Importar mis datos
+            </button>
+        </label>
+        <!-- BOTÓN DE CERRAR SESIÓN AÑADIDO -->
+        <button id="logoutBtn" class="data-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16 13v-2H7v-2h9V7l4 4-4 4zm-5-1h2V3H3v18h10v-9H9v3z"/></svg>
+            Cerrar Sesión
+        </button>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="index.html"><img src="inicio.png" alt="Inicio"></a>
+    <a href="repertorio.html"><img src="https://img.icons8.com/?size=100&id=8113&format=png&color=000000" alt="Repertorio"></a>
+    <a href="notificaciones.html"><img src="https://img.icons8.com/?size=100&id=3334&format=png&color=000000" alt="Notificaciones"></a>
+    <a href="perfil.html"><img src="usuario.png" alt="Usuario"></a>
+  </nav>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const userDataKey = 'userData';
+
+    const nombreInput = document.getElementById('nombreInput');
+    const fotoInput = document.getElementById('fotoInput');
+    const fotoPreview = document.getElementById('fotoPreview');
+    const bienvenida = document.getElementById('bienvenida');
+    const exportarBtn = document.getElementById('exportarBtn');
+    const importInput = document.getElementById('importInput');
+    const logoutBtn = document.getElementById('logoutBtn'); // Referencia al nuevo botón
+
+    function cargarDatos() {
+        return JSON.parse(localStorage.getItem(userDataKey)) || { nombre: '', foto: '', favoritos: [], vistos: [] };
+    }
+
+    function guardarDatos(data) {
+        localStorage.setItem(userDataKey, JSON.stringify(data));
+        // Mantenemos la lista de IDs separada para compatibilidad con mylist.html
+        const favoriteIds = data.favoritos.map(favId => favId);
+        localStorage.setItem('favoriteAnimeIds', JSON.stringify(favoriteIds));
+    }
+
+    function actualizarUI() {
+        const data = cargarDatos();
+        if (data.nombre) {
+            nombreInput.value = data.nombre;
+            bienvenida.textContent = `Bienvenido/a, ${data.nombre}`;
+        } else {
+            // Si no hay nombre, intentamos sacar el email del objeto 'user'
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user.email) {
+                bienvenida.textContent = `Bienvenido/a, ${user.email}`;
+            } else {
+                bienvenida.textContent = '';
+            }
+        }
+        if (data.foto) {
+            fotoPreview.src = data.foto;
+        }
+    }
+
+    nombreInput.addEventListener('input', e => {
+        const data = cargarDatos();
+        data.nombre = e.target.value;
+        guardarDatos(data);
+        actualizarUI();
+    });
+
+    fotoInput.addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const data = cargarDatos();
+                data.foto = reader.result;
+                guardarDatos(data);
+                actualizarUI();
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    exportarBtn.addEventListener('click', () => {
+        const data = cargarDatos();
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'vanifruzhi_datos.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    });
+
+    importInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        try {
+            const text = await file.text();
+            const json = JSON.parse(text);
+            if (typeof json !== 'object' || !('nombre' in json) || !('favoritos' in json) || !('vistos' in json)) {
+                alert("Archivo de datos inválido.");
+                return;
+            }
+            if (confirm("Esto reemplazará todos tus datos locales actuales. ¿Estás seguro?")) {
+                guardarDatos(json);
+                actualizarUI();
+                alert("Datos importados correctamente.");
+            }
+        } catch (err) {
+            alert("Error al importar el archivo.");
+            console.error(err);
+        }
+        e.target.value = "";
+    });
+    
+    // --- LÓGICA PARA CERRAR SESIÓN ---
+    logoutBtn.addEventListener('click', () => {
+        if (confirm("¿Estás seguro de que quieres cerrar sesión?")) {
+            // Borramos solo el token de autenticación
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user'); // También borramos la info del usuario
+            alert("Has cerrado sesión.");
+            // Redirigimos a la página de login
+            window.location.href = '/login.html';
+        }
+    });
+
+    actualizarUI();
+  });
+  </script>
+
+</body>
+</html>
