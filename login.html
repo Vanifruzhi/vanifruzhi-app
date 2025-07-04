@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - VanifruzhiApp</title>
+    <link rel="icon" href="vfz.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body.auth-page {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Pseudo-elemento para el fondo con imagen y superposición */
+        body.auth-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(2px); /* Un ligero desenfoque para el fondo */
+            z-index: -2;
+        }
+
+        body.auth-page::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(18, 18, 18, 0.6); /* Capa oscura con 60% de opacidad */
+            z-index: -1;
+        }
+
+        /* Contenedor del formulario con efecto de vidrio */
+        .auth-container {
+            background-color: rgba(30, 30, 30, 0.75);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .auth-container h1 {
+            color: #F47521;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-bottom: 2px solid #555;
+            background-color: transparent;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-bottom-color: #F47521;
+        }
+
+        .auth-button {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #e812be;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .auth-button:hover {
+            background-color: #af1791;
+            transform: scale(1.02);
+        }
+
+        .switch-form {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .switch-form a {
+            color: #F47521;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #errorMessage {
+            color: #ff4d4d;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            min-height: 1.2em;
+        }
+    </style>
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <h1>Iniciar Sesión</h1>
+        <div id="errorMessage"></div>
+        <form id="loginForm">
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Correo electrónico" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Contraseña" required>
+            </div>
+            <button type="submit" class="auth-button">Entrar</button>
+        </form>
+        <div class="switch-form">
+            ¿No tienes una cuenta? <a href="register.html">Regístrate</a>
+        </div>
+    </div>
+    <script src="auth.js"></script>
+</body>
+</html>

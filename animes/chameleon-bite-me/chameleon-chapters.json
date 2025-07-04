@@ -1,0 +1,47 @@
+{
+  "sinopsis": "Yazawa es un delincuente juvenil que sueña con ser el número uno entre los pandilleros. En su camino por cumplir su objetivo, se ve envuelto en situaciones absurdas, combates callejeros y muchas locuras. ¡Una comedia irreverente con toques de acción y mucho estilo!",
+  "episodes": [
+    {
+      "id": 1,
+      "title": "Ova 1: ¡Yazawa está aquí!",
+      "description": "N/A",
+      "img": "https://pbs.twimg.com/media/GubkthdW4AEifur?format=jpg&name=large",
+      "link": "chameleon01.html"
+    },
+    {
+      "id": 2,
+      "title": "Ova 2: Hermanos del infierno",
+      "description": "N/A",
+      "img": "https://pbs.twimg.com/media/GublkBNXYAAPDcP?format=jpg&name=large",
+      "link": "chameleon02.html"
+    },
+    {
+      "id": 3,
+      "title": "Ova 3: Los lazos de hermandad del asesino a sueldo",
+      "description": "N/A",
+      "img": "https://pbs.twimg.com/media/GudAXSUWcAAbuqH?format=jpg&name=large",
+      "link": "chameleon03.html"
+    },
+{
+      "id": 4,
+      "title": "Ova 4: Un infernal uno vs uno",
+      "description": "N/A",
+      "img": "https://pbs.twimg.com/media/GudAa6uWQAAsYs_?format=jpg&name=large",
+      "link": "chameleon04.html"
+    },
+{
+      "id": 5,
+      "title": "Ova 5: Gran pelea en el congelador",
+      "description": "N/A",
+      "img": "https://pbs.twimg.com/media/GudAeoEXgAAizgA?format=jpg&name=large",
+      "link": "chameleon05.html"
+    },
+{
+      "id": 6,
+      "title": "Ova 6: Yazawa vs Hnos. Matsuoka",
+      "description": "N/A",
+      "img": "https://pbs.twimg.com/media/GudAioWXUAACUEL?format=jpg&name=large",
+      "link": "chameleon06.html"
+    }
+  ]
+}

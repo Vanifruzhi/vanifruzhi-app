@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bite me! Chameleon - Ova 1</title>
+  <link rel="icon" type="image/png" href="../../vfz.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #e812be;
+      --secondary-color: #F47521;
+      --background-color: #121212;
+      --surface-color: #1e1e1e;
+      --text-color: #ffffff;
+      --text-muted-color: #a0a0a0;
+      --button-color: #2a2a2a; /* NUEVO COLOR BASE PARA BOTONES */
+      --button-hover-color: #3a3a3a;
+    }
+
+    body { 
+      margin:0; 
+      background: var(--background-color); 
+      color: var(--text-color); 
+      font-family: 'Inter', sans-serif; 
+      padding-bottom: 80px; 
+    }
+
+    header { 
+      background: var(--surface-color); 
+      padding: 1rem; 
+      text-align:center; 
+      position:sticky; 
+      top:0; 
+      z-index:999; 
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    h1 { font-size:1.2rem; margin: 0; }
+
+    .video-container { 
+      position:relative; 
+      width:100%; 
+      padding-bottom:56.25%; 
+      height:0; 
+      overflow:hidden; 
+      background:#000; 
+    }
+
+    .video-container iframe { 
+      position:absolute; 
+      top:0; 
+      left:0; 
+      width:100%; 
+      height:100%; 
+      border:0; 
+    }
+    
+    .player-controls {
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* --- MENÚ DESPLEGABLE DE SERVIDORES --- */
+    .server-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .server-dropdown-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background-color: var(--surface-color);
+        color: var(--text-color);
+        padding: 12px 20px;
+        font-size: 1rem;
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    .server-dropdown-btn:hover {
+        background-color: #2a2a2a;
+    }
+    .server-dropdown-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #2a2a2a;
+        min-width: 200px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+        z-index: 1000;
+        border-radius: 8px;
+        padding: 0.5rem 0;
+        bottom: 110%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .dropdown-content a {
+        color: var(--text-muted-color);
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        transition: background-color 0.2s, color 0.2s;
+    }
+
+    .dropdown-content a:hover {
+        background-color: var(--primary-color);
+        color: var(--text-color);
+    }
+    .dropdown-content a.active {
+        color: var(--secondary-color);
+        font-weight: bold;
+    }
+
+    .server-dropdown.active .dropdown-content {
+        display: block;
+    }
+    
+    .info-section {
+        padding: 0 1rem 1rem 1rem;
+    }
+
+    .info-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    .info-header h2 { color: var(--secondary-color); margin: 0; }
+    
+    .info-section p { color: var(--text-muted-color); line-height: 1.6; }
+
+    /* --- NUEVO ICONO DE COMPARTIR --- */
+    .share-icon-btn {
+        background: none;
+        border: none;
+        color: var(--text-muted-color);
+        cursor: pointer;
+        padding: 5px;
+    }
+    .share-icon-btn:hover svg {
+        fill: var(--text-color);
+    }
+    .share-icon-btn svg {
+        width: 24px;
+        height: 24px;
+        transition: fill 0.2s;
+    }
+
+
+    /* --- ESTILO DE BOTONES MODIFICADO --- */
+    .actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: var(--button-color); /* CAMBIO DE COLOR */
+        border: 1px solid rgba(255,255,255,0.1); /* Borde sutil */
+        padding: 12px;
+        color: var(--text-color);
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        transition: transform 0.2s, background-color 0.2s;
+    }
+    .action-btn:hover {
+        transform: translateY(-2px);
+        background-color: var(--button-hover-color); /* CAMBIO DE COLOR */
+    }
+    .action-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .error-msg { text-align:center; color:#f66; margin:0.5rem 1rem; font-size:0.9rem; display:none; }
+ 
+    /* --- BARRA DE NAVEGACIÓN INFERIOR --- */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); z-index: 999; }
+    .bottom-nav a { color: white; text-decoration: none; font-size: 0.8rem; text-align: center; padding: 0.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .bottom-nav img { width: 25px; height: 25px; filter: brightness(0) invert(1); }
+
+    /* --- MODAL DE LISTA DE EPISODIOS --- */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 1001; display: none; justify-content: center; align-items: center; }
+    .modal-overlay.active { display: flex; }
+    .modal-content { background: var(--surface-color); padding: 1.5rem; border-radius: 12px; width: 90%; max-width: 500px; max-height: 80vh; display: flex; flex-direction: column; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; }
+    .modal-header h3 { margin: 0; color: var(--secondary-color); }
+    .modal-close-btn { background: none; border: none; color: var(--text-muted-color); font-size: 1.5rem; cursor: pointer; }
+    .episodes-list { list-style: none; padding: 0; overflow-y: auto; }
+    .episodes-list li a { display: block; padding: 0.8rem 0.5rem; color: var(--text-color); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background-color 0.2s; }
+    .episodes-list li a:hover { background-color: rgba(255,255,255,0.05); }
+    .episodes-list li.current a { color: var(--primary-color); font-weight: bold; }
+  </style>
+</head>
+<body>
+     <script>
+        if (!localStorage.getItem('authToken')) {
+            window.location.href = '../../login.html';
+        }
+    </script>
+  <header>
+    <h1 id="episodeTitle">Bite me! Chameleon - Ova 01</h1>
+  </header>
+
+  <div class="video-container">
+    <iframe id="externalPlayer" src="https://drive.google.com/file/d/12ghb0DunIRMutgxDPJGPc178c_L3kn2F/preview" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+  </div>
+
+  <div class="player-controls">
+    <div class="server-dropdown" id="serverDropdown">
+        <button class="server-dropdown-btn" id="serverBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21 13H3v-2h18v2zm-9-6H3V5h9v2zm0 8H3v-2h9v2z"/></svg>
+            <span>Servidor 1 (Drive)</span>
+        </button>
+        <div class="dropdown-content" id="serverList">
+            <a href="#" class="active" data-server="drive">Servidor 1 (Drive)</a>
+            <a href="#" data-server="mega">Servidor 2 (Mega)</a>
+            <a href="#" data-server="voe">Servidor 3 (Voe)</a>
+            <a href="#" data-server="okru">Servidor 4 (Ok.ru)</a>
+        </div>
+    </div>
+  </div>
+
+  <div class="error-msg" id="errorMsg">Error al cargar el video. Intenta con otro servidor.</div>
+
+  <div class="info-section">
+    <div class="info-header">
+        <h2>Sinopsis</h2>
+        <button class="share-icon-btn" onclick="shareEpisode()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+        </button>
+    </div>
+    <p>Eisaku Yazawa, un estudiante de secundaria que, a pesar de su baja estatura y naturaleza cobarde, alberga una ambición desmedida: convertirse en el líder de una pandilla de delincuentes a nivel nacional.
+    El capítulo inicial establece el tono de comedia y acción de la serie, presentando a Yazawa en su primer día en una nueva escuela. Fiel a su objetivo, intenta proyectar una imagen de tipo duro y busca hacerse un nombre entre los matones y delincuentes que ya dominan la escena escolar.</p>
+    
+    <div class="actions-grid">
+        <button class="action-btn" onclick="prevEpisode()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            Anterior
+        </button>
+        <button class="action-btn" onclick="nextEpisode()">
+            Siguiente
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+        <button class="action-btn" id="episodeListBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zm0-10v2h14V7H7z"/></svg>
+            Episodios
+        </button>
+        <button class="action-btn" onclick="downloadEpisode()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            Descargar
+        </button>
+    </div>
+  </div>
+
+  <!-- MODAL DE LISTA DE EPISODIOS -->
+  <div class="modal-overlay" id="episodesModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Lista de Episodios</h3>
+            <button class="modal-close-btn" id="closeModalBtn">&times;</button>
+        </div>
+        <ul class="episodes-list" id="episodesListContainer">
+            <!-- La lista de episodios se generará aquí -->
+        </ul>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="../../index.html"><img src="../../inicio.png" alt="Inicio"></a>
+    <a href="../../repertorio.html"><img src="https://img.icons8.com/?size=100&id=8113&format=png&color=000000" alt="Repertorio"></a>
+    <a href="../../notificaciones.html"><img src="https://img.icons8.com/?size=100&id=3334&format=png&color=000000" alt="Notificaciones"></a>
+    <a href="../../perfil.html"><img src="../../usuario.png" alt="Usuario"></a>
+  </nav>
+
+  <script>
+    const player = document.getElementById('externalPlayer');
+    const errorMsg = document.getElementById('errorMsg');
+    const serverBtn = document.getElementById('serverBtn');
+    const serverDropdown = document.getElementById('serverDropdown');
+    const serverList = document.getElementById('serverList');
+    const episodeListBtn = document.getElementById('episodeListBtn');
+    const episodesModal = document.getElementById('episodesModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const episodesListContainer = document.getElementById('episodesListContainer');
+
+    const ANIME_ID = 1; // ID de "Bite me! Chameleon"
+    const CURRENT_EPISODE = 1;
+    const TOTAL_EPISODES = 6; // Número total de episodios de este anime
+
+    const sources = {
+      drive: 'https://drive.google.com/file/d/12ghb0DunIRMutgxDPJGPc178c_L3kn2F/preview',
+      mega: 'https://mega.nz/embed/XIQCGKoZ#96y0cASpxCQyc48ZQpwc0V_t0eKqeb23HJ0nx0r3Y0k',
+      voe: 'https://voe.sx/e/vhqtzkmhb4ll',
+      okru: 'https://ok.ru/videoembed/9084819212831?'
+    };
+
+    // --- LÓGICA DEL MENÚ DE SERVIDORES ---
+    serverBtn.addEventListener('click', () => {
+        serverDropdown.classList.toggle('active');
+    });
+
+    window.addEventListener('click', (event) => {
+        if (!serverDropdown.contains(event.target)) {
+            serverDropdown.classList.remove('active');
+        }
+    });
+
+    serverList.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (event.target.tagName === 'A') {
+            const server = event.target.dataset.server;
+            changeServer(server, event.target);
+        }
+    });
+
+    function changeServer(server, linkElement) {
+      serverBtn.querySelector('span').textContent = linkElement.textContent;
+      serverList.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+      linkElement.classList.add('active');
+      errorMsg.style.display = 'none';
+      try {
+        player.src = sources[server];
+      } catch (e) {
+        errorMsg.style.display = 'block';
+      }
+      serverDropdown.classList.remove('active');
+    }
+
+    // --- NAVEGACIÓN DE EPISODIOS ---
+    function prevEpisode() {
+      if (CURRENT_EPISODE > 1) {
+        const prevEpisodeNum = String(CURRENT_EPISODE - 1).padStart(2, '0');
+        window.location.href = `chameleon${prevEpisodeNum}.html`;
+      } else {
+        alert("Este es el primer episodio.");
+      }
+    }
+    
+    function nextEpisode() {
+      if (CURRENT_EPISODE < TOTAL_EPISODES) {
+        const nextEpisodeNum = String(CURRENT_EPISODE + 1).padStart(2, '0');
+        window.location.href = `chameleon${nextEpisodeNum}.html`;
+      } else {
+        alert("Este es el último episodio.");
+      }
+    }
+
+    // --- LÓGICA DEL MODAL DE EPISODIOS ---
+    episodeListBtn.addEventListener('click', () => {
+        episodesModal.classList.add('active');
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+        episodesModal.classList.remove('active');
+    });
+
+    episodesModal.addEventListener('click', (event) => {
+        if (event.target === episodesModal) {
+            episodesModal.classList.remove('active');
+        }
+    });
+    
+    function generateEpisodeList() {
+        episodesListContainer.innerHTML = '';
+        for (let i = 1; i <= TOTAL_EPISODES; i++) {
+            const li = document.createElement('li');
+            if (i === CURRENT_EPISODE) {
+                li.classList.add('current');
+            }
+            const a = document.createElement('a');
+            const episodeNum = String(i).padStart(2, '0');
+            a.href = `chameleon${episodeNum}.html`;
+            a.textContent = `Episodio ${i}`;
+            li.appendChild(a);
+            episodesListContainer.appendChild(li);
+        }
+    }
+
+    // --- OTRAS ACCIONES ---
+    function downloadEpisode() {
+      window.open('https://exe.io/chachamaleon01ahard', '_blank');
+    }
+
+    function shareEpisode() {
+      if (navigator.share) {
+        navigator.share({
+          title: document.title,
+          url: window.location.href
+        });
+      } else {
+        alert("Tu navegador no permite compartir.");
+      }
+    }
+
+    // --- INICIALIZACIÓN ---
+    generateEpisodeList();
+  </script>
+</body>
+</html>

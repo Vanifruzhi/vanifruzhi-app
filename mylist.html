@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mi Lista</title>
+<link rel="icon" href="vfz.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Reset y estilos base (copiados de index.html) */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: #121212;
+    color: #fff;
+    padding-bottom: 70px;
+    margin: 0;
+    overflow-x: hidden;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* --- HEADER (copiado de index.html) --- */
+  header {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    padding: 0.8rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: background 0.3s ease;
+  }
+
+  header h1 {
+    font-size: 1.4rem;
+    color: white;
+    margin: 0 auto 0 auto; /* Centrar el título */
+  }
+
+  main {
+    max-width: 900px;
+    margin: 60px auto 0 auto;
+    padding: 0 1rem;
+  }
+
+  .section {
+    margin: 1.5rem 0 0 0;
+  }
+
+  .section h2 {
+    color: #F47521;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  /* --- NAVEGACIÓN DE PESTAÑAS (TABS) --- */
+  .tabs-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #1a1a1a;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    position: sticky;
+    top: 50px;
+    z-index: 900;
+  }
+
+  .tab-button {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: color 0.2s ease, border-bottom 0.2s ease;
+    text-transform: uppercase;
+    flex-grow: 1;
+    text-align: center;
+  }
+
+  .tab-button.active {
+    color: #F47521;
+    border-bottom: 2px solid #F47521;
+  }
+
+  .tab-content {
+    display: none;
+    padding-top: 1rem;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  /* --- ESTILOS DE LISTA DE ANIME/EPISODIO (para favoritos e historial) --- */
+  .list-container {
+    list-style: none;
+    padding: 0;
+  }
+
+  .list-item {
+    display: flex;
+    align-items: center; /* Alinea los ítems al centro verticalmente */
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    position: relative; /* CRUCIAL: Para posicionar botones absolutos */
+  }
+
+  .list-item:hover {
+    background-color: rgba(255,255,255,0.03);
+  }
+
+  .list-item-link { /* Contenedor para hacer la mayor parte del item clickeable */
+      display: flex;
+      align-items: flex-start; /* Alinea contenido al inicio */
+      width: 100%; /* Ocupa casi todo el ancho */
+      text-decoration: none;
+      color: inherit;
+      padding-right: 80px; /* Espacio para los botones de la derecha */
+  }
+
+  .list-item-thumbnail {
+    width: 80px;
+    height: 120px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-right: 1rem;
+    background-color: #000;
+  }
+
+  .list-item-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .list-item-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .list-item-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  .list-item-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    flex-grow: 1;
+    margin-right: 5px;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .list-item-subtitle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .list-item-subtitle {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.7);
+    flex-grow: 1;
+    margin-right: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* --- BOTONES DE ACCIÓN (Corazón, Opciones, Compartir) --- */
+  .list-item-options-btn,
+  .list-item-heart-btn,
+  .list-item-share-btn {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    font-size: 1.8rem; /* Tamaño de icono general para estos botones */
+    cursor: pointer;
+    line-height: 1;
+    position: absolute; /* POSICIONAMIENTO ABSOLUTO DENTRO DE list-item */
+    top: 50%; /* Centrar verticalmente */
+    transform: translateY(-50%); /* Ajuste fino del centrado */
+    z-index: 2; /* Asegurar que esté por encima del enlace */
+    width: 35px; /* Ancho del área clickeable */
+    height: 35px; /* Alto del área clickeable */
+    display: flex; /* Para centrar el icono dentro del botón */
+    justify-content: center;
+    align-items: center;
+  }
+
+  .list-item-options-btn:hover,
+  .list-item-heart-btn:hover,
+  .list-item-share-btn:hover {
+    color: white;
+  }
+
+  .list-item-options-btn { /* Posición para los tres puntitos */
+    right: 10px; /* A 10px del borde derecho */
+  }
+
+  .list-item-heart-btn { /* Posición para el corazón (a la izquierda de los tres puntitos) */
+    right: 50px; /* 10px de margen + 35px de ancho del botón de opciones */
+  }
+  .list-item-heart-btn img {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1);
+  }
+
+  .list-item-share-btn { /* Posición para el botón de compartir */
+    right: 10px; /* En lugar de los tres puntitos en historial */
+    font-size: 1.5rem; /* Ajuste para icono de compartir */
+  }
+  .list-item-share-btn img { /* Estilo si usas una imagen para compartir */
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+  }
+
+  /* --- POP-UP DE OPCIONES (copiado de index.html) --- */
+  .options-popup {
+    position: fixed;
+    background-color: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(5px);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    z-index: 1002;
+    list-style: none;
+    padding: 0.5rem 0;
+    display: none; /* Controlado por JS, será block para cálculo */
+    min-width: 180px;
+    max-width: 250px;
+    will-change: transform;
+    transform: translateZ(0);
+    overflow-y: auto;
+    max-height: 80vh;
+  }
+
+  .options-popup.active {
+    display: block;
+    visibility: visible; /* APLICAR EN ACTIVO */
+  }
+
+  .options-popup li a {
+    display: block;
+    padding: 0.8rem 1.5rem;
+    color: white;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .options-popup li a:hover {
+    background-color: rgba(232, 18, 190, 0.2);
+    color: #e812be;
+  }
+
+
+  /* --- BOTTOM NAVIGATION BAR (copiado de index.html) --- */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    z-index: 999;
+  }
+
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+  }
+
+  .bottom-nav a:hover {
+    opacity: 1;
+  }
+
+  .bottom-nav img {
+    width: 25px;
+    height: 25px;
+    filter: brightness(0) invert(1);
+  }
+  .bottom-nav a:hover img {
+    filter: brightness(0) saturate(100%) invert(20%) sepia(80%) saturate(800%) hue-rotate(280deg) brightness(1.2);
+  }
+
+
+  /* Media Queries (copiadas de index.html) */
+  @media (max-width: 767px) {
+    main {
+      max-width: 100%;
+      margin-top: 60px;
+      padding: 0 1rem;
+    }
+    /* Ajustes para las miniaturas en listas de móviles */
+    .list-item-thumbnail {
+        width: 60px;
+        height: 90px;
+    }
+    .list-item-title {
+        font-size: 0.9rem;
+    }
+    .list-item-subtitle {
+        font-size: 0.7rem;
+    }
+    .list-item-options-btn, .list-item-heart-btn, .list-item-share-btn {
+        font-size: 1.5rem; /* Tamaño de iconos en móvil */
+        width: 28px; /* Tamaño del área del botón */
+        height: 28px;
+    }
+    .list-item-heart-btn img, .list-item-share-btn img {
+        width: 18px;
+        height: 18px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    header h1 {
+      font-size: 1.2rem;
+    }
+  }
+
+  #popupCloseBtn {
+    position: relative; /* Necesario para que z-index funcione correctamente */
+    z-index: 9999;      /* Un valor altísimo para asegurar que esté por encima de todo */
+    
+}
+
+</style>
+</head>
+<body>
+  <script>
+    // GUARDIÁN DE AUTENTICACIÓN
+    if (!localStorage.getItem('authToken')) {
+      window.location.href = 'login.html';
+    }
+  </script>
+
+  <ul id="optionsPopup" class="options-popup">
+    <li><a href="#" id="popupAddToFav">Eliminar de favoritos</a></li>
+    <li><a href="#" id="popupViewNow">Ver ahora</a></li>
+    <li><a href="#" id="popupShare">Compartir</a></li>
+    <li class="popup-close-item"><a href="#" id="popupCloseBtn">Cerrar</a></li>
+  </ul>
+
+  <header>
+    <h1>Mis Listas</h1>
+  </header>
+
+  <main>
+    <div class="tabs-nav">
+      <button class="tab-button active" data-tab="favorites">Favoritos</button>
+      <button class="tab-button" data-tab="history">Historial</button>
+      </div>
+
+    <div id="favoritesContent" class="tab-content active">
+      <section class="section">
+        <div id="favoritesListContainer" class="list-container">
+          </div>
+      </section>
+    </div>
+
+    <div id="historyContent" class="tab-content">
+      <section class="section">
+        <div id="watchedListContainer" class="list-container">
+          </div>
+      </section>
+    </div>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="index.html"><img src="inicio.png" alt="Inicio"></a>
+    <a href="repertorio.html"><img src="https://img.icons8.com/?size=100&id=8113&format=png&color=000000" alt="Repertorio"></a>
+    <a href="notificaciones.html"><img src="https://img.icons8.com/?size=100&id=3334&format=png&color=000000" alt="Notificaciones"></a>
+    <a href="perfil.html"><img src="usuario.png" alt="Usuario"></a>
+  </nav>
+
+<script src="animeData.js"></script> 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const userData = JSON.parse(localStorage.getItem('userData')) || { nombre: '', foto: '', favoritos: [], vistos: [] };
+    const favoritesListContainer = document.getElementById('favoritesListContainer');
+    const watchedListContainer = document.getElementById('watchedListContainer');
+    let favoritesGlobal = JSON.parse(localStorage.getItem('favoriteAnimeIds') || '[]');
+
+    // --- Lógica del Pop-up de Opciones (tres puntitos) ---
+    const optionsPopup = document.getElementById('optionsPopup');
+    const popupAddToFav = document.getElementById('popupAddToFav');
+    const popupViewNow = document.getElementById('popupViewNow');
+    const popupShare = document.getElementById('popupShare');
+    const popupCloseBtn = document.getElementById('popupCloseBtn'); 
+    let currentAnimeIdForPopup = null;
+
+    // PRUEBA 1: Verificamos si el botón de cerrar fue encontrado en el HTML.
+    // Este mensaje debe aparecer en la consola apenas se carga la página.
+    console.log('PRUEBA 1: Botón de cerrar encontrado:', popupCloseBtn);
+
+    function hideOptionsPopup() {
+    // PRUEBA 4: Verificamos si la función para ocultar el popup se está ejecutando.
+    console.log('PRUEBA 4: Ejecutando hideOptionsPopup(). Clases ANTES:', optionsPopup.classList);
+    optionsPopup.classList.remove('active');
+
+    // ===== LA SOLUCIÓN =====
+    // Reseteamos el estilo 'display' en línea para que el CSS pueda tomar el control de nuevo.
+    optionsPopup.style.display = ''; 
+    // =======================
+
+    // PRUEBA 5: Verificamos si la clase 'active' fue eliminada.
+    console.log('PRUEBA 5: Clases DESPUÉS de remover "active":', optionsPopup.classList);
+    currentAnimeIdForPopup = null;
+}
+
+    // Listener para el nuevo botón de cerrar 
+    popupCloseBtn.addEventListener('click', (event) => { 
+        // PRUEBA 2: Verificamos si el evento de clic en el botón se registra.
+        console.log('PRUEBA 2: ¡Clic en el botón de cerrar detectado!');
+        event.preventDefault(); 
+        
+        // PRUEBA 3: Verificamos si se está intentando llamar a la función para ocultar.
+        console.log('PRUEBA 3: Llamando a hideOptionsPopup() ahora...');
+        hideOptionsPopup(); 
+    });
+
+
+    // Cerrar pop-up al hacer clic fuera (o en otro botón de opciones)
+    document.addEventListener('click', (event) => {
+      if (!optionsPopup.contains(event.target) && !event.target.closest('.list-item-options-btn')) {
+        hideOptionsPopup();
+      }
+    });
+
+    // --- Lógica para el botón Añadir/Quitar de Favoritos en el pop-up ---
+    popupAddToFav.addEventListener('click', (event) => {
+        if (currentAnimeIdForPopup) {
+            const id = currentAnimeIdForPopup;
+            const data = JSON.parse(localStorage.getItem('userData')) || { nombre: '', foto: '', favoritos: [], vistos: [] };
+            
+            const animeInfoArray = Object.values(animeData); 
+            const anime = animeInfoArray.find(a => a.id.toString() === id);
+            const animeTitle = anime ? anime.title : '';
+
+            if (favoritesGlobal.includes(id)) {
+                favoritesGlobal = favoritesGlobal.filter(favId => favId !== id);
+                data.favoritos = data.favoritos.filter(name => name !== animeTitle);
+                alert(`${animeTitle} eliminado de favoritos.`);
+            } else {
+                favoritesGlobal.push(id);
+                if (animeTitle && !data.favoritos.includes(animeTitle)) {
+                    data.favoritos.push(animeTitle);
+                }
+                alert(`${animeTitle} añadido a favoritos.`);
+            }
+            localStorage.setItem('favoriteAnimeIds', JSON.stringify(favoritesGlobal));
+            localStorage.setItem('userData', JSON.stringify(data));
+            
+            renderFavorites(); 
+        }
+    });
+
+    popupViewNow.addEventListener('click', (event) => {
+        if (currentAnimeIdForPopup) {
+            const id = currentAnimeIdForPopup;
+            const animeInfoArray = Object.values(animeData);
+            const anime = animeInfoArray.find(a => a.id.toString() === id);
+            if (anime && anime.firstEpisodeLink) {
+                window.open(anime.firstEpisodeLink, '_blank');
+            } else if (anime && anime.mainHtmlLink) { 
+                window.open(anime.mainHtmlLink, '_blank');
+            } else {
+                alert('Enlace no disponible para este anime.');
+            }
+            hideOptionsPopup();
+        }
+    });
+
+    popupShare.addEventListener('click', (event) => {
+        if (currentAnimeIdForPopup && navigator.share) {
+            const id = currentAnimeIdForPopup;
+            const animeInfoArray = Object.values(animeData);
+            const anime = animeInfoArray.find(a => a.id.toString() === id);
+            if (anime) {
+                navigator.share({
+                    title: `Compartir ${anime.title}`,
+                    text: `¡Mira este anime: ${anime.title}!`,
+                    url: anime.mainHtmlLink || window.location.href
+                }).catch(err => console.error('Error al compartir:', err));
+            }
+            hideOptionsPopup();
+
+        } else {
+            alert("Tu navegador no soporta la función de compartir.");
+            hideOptionsPopup();
+        }
+        
+    });
+  
+    // --- Renderizar Animes Favoritos ---
+    function renderFavorites() {
+        // ... (el resto de tu función renderFavorites no necesita cambios)
+        favoritesListContainer.innerHTML = '';
+        const data = JSON.parse(localStorage.getItem('userData')).favoritos || [];
+
+        if (data.length > 0) {
+            data.forEach(animeName => {
+                const key = normalizarNombre(animeName);
+                const anime = animeData[key];
+                
+                if (anime) {
+                    const listItem = document.createElement('div');
+                    listItem.className = 'list-item';
+                    listItem.innerHTML = `
+                        <a href="${anime.mainHtmlLink}" target="_blank" class="list-item-link">
+                            <div class="list-item-thumbnail">
+                                <img src="${anime.portada}" alt="${anime.title}">
+                            </div>
+                            <div class="list-item-details">
+                                <div class="list-item-title-row">
+                                    <span class="list-item-title">${anime.title}</span>
+                                </div>
+                                <div class="list-item-subtitle-row">
+                                    <span class="list-item-subtitle">${anime.audioStatus || 'N/A'}</span>
+                                    <button class="list-item-heart-btn" data-anime-id="${anime.id}">
+                                        <img src="${favoritesGlobal.includes(anime.id.toString()) ? 'https://img.icons8.com/ios-filled/50/ffffff/like--v1.png' : 'https://img.icons8.com/fluency-systems-regular/48/ffffff/like.png'}" alt="Corazón">
+                                    </button>
+                                </div>
+                            </div>
+                        </a>
+                        <button class="list-item-options-btn" data-anime-id="${anime.id}">⋮</button>
+                    `;
+                    favoritesListContainer.appendChild(listItem);
+                }
+            });
+        } else {
+            favoritesListContainer.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.7);">Aún no tienes animes favoritos.</p>';
+        }
+
+        attachListItemListeners();
+    }
+
+    // --- Renderizar Historial de Vistos ---
+    function renderHistory() {
+        // ... (el resto de tu función renderHistory no necesita cambios)
+        watchedListContainer.innerHTML = '';
+        const data = JSON.parse(localStorage.getItem('userData')).vistos || [];
+        const reversedVistos = [...data].reverse();
+
+        if (reversedVistos.length > 0) {
+            reversedVistos.forEach(epKey => {
+                const [animeId, episodeNum] = epKey.split('-');
+                const anime = animeInfoById[parseInt(animeId)];
+                
+                if (anime) {
+                    const episodeTitleText = `${anime.title} Ova ${episodeNum}`; 
+                    const episodeImg = anime.miniatura;
+                    const episodeLink = `${anime.basePath}${anime.episodeFileNamePrefix}${String(episodeNum).padStart(2, '0')}.html`;
+
+                    const listItem = document.createElement('div');
+                    listItem.className = 'list-item';
+                    listItem.innerHTML = `
+                        <a href="${episodeLink}" target="_blank" class="list-item-link">
+                            <div class="list-item-thumbnail">
+                                <img src="${episodeImg}" alt="${anime.title} - ${episodeTitleText}">
+                            </div>
+                            <div class="list-item-details">
+                                <div class="list-item-title-row">
+                                    <span class="list-item-title">${episodeTitleText}</span>
+                                </div>
+                                <div class="list-item-subtitle-row">
+                                    <span class="list-item-subtitle">Visto ✅</span>
+                                    <button class="list-item-share-btn" data-anime-id="${anime.id}" data-episode-num="${episodeNum}">
+                                        <img src="https://img.icons8.com/ios-filled/50/ffffff/share--v1.png" alt="Compartir">
+                                    </button>
+                                </div>
+                            </div>
+                        </a>
+                    `;
+                    watchedListContainer.appendChild(listItem);
+                }
+            });
+        } else {
+            watchedListContainer.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.7);">Aún no has visto ningún episodio.</p>';
+        }
+        attachListItemListeners();
+    }
+
+    // --- Lógica para adjuntar listeners a los botones de la lista ---
+    function attachListItemListeners() {
+        // ... (el resto de tu función attachListItemListeners no necesita cambios)
+        document.querySelectorAll('.list-item-options-btn').forEach(button => {
+            button.onclick = (event) => {
+                event.stopPropagation();
+                const clickedAnimeId = event.currentTarget.dataset.animeId;
+                currentAnimeIdForPopup = clickedAnimeId;
+                const buttonRect = event.currentTarget.getBoundingClientRect();
+                optionsPopup.style.display = 'block';
+                optionsPopup.style.visibility = 'hidden';
+                setTimeout(() => {
+                    const popupWidth = optionsPopup.offsetWidth;
+                    const popupHeight = optionsPopup.offsetHeight;
+                    let popupX = buttonRect.left;
+                    let popupY = buttonRect.bottom + 5; 
+                    if (popupX + popupWidth > window.innerWidth - 5) {
+                        popupX = window.innerWidth - popupWidth - 5;
+                    }
+                    if (popupX < 5) {
+                        popupX = 5;
+                    }
+                    if (popupY + popupHeight > window.innerHeight - 5) {
+                        popupY = buttonRect.top - popupHeight - 5; 
+                        if (popupY < 5) {
+                            popupY = 5;
+                        }
+                    }
+                    optionsPopup.style.left = `${popupX}px`;
+                    optionsPopup.style.top = `${popupY}px`;
+                    optionsPopup.style.visibility = 'visible';
+                    optionsPopup.classList.add('active');
+                }, 0);
+            };
+        });
+
+        document.querySelectorAll('.list-item-heart-btn').forEach(button => {
+            button.onclick = (event) => {
+                event.stopPropagation();
+                const id = event.currentTarget.dataset.id;
+                const data = JSON.parse(localStorage.getItem('userData')) || { nombre: '', foto: '', favoritos: [], vistos: [] };
+                
+                const animeInfoArray = Object.values(animeData);
+                const anime = animeInfoArray.find(a => a.id.toString() === id);
+                const animeTitle = anime ? anime.title : '';
+
+                if (favoritesGlobal.includes(id)) {
+                    favoritesGlobal = favoritesGlobal.filter(favId => favId !== id);
+                    data.favoritos = data.favoritos.filter(name => name !== animeTitle);
+                } else {
+                    favoritesGlobal.push(id);
+                    if (animeTitle && !data.favoritos.includes(animeTitle)) {
+                        data.favoritos.push(animeTitle);
+                    }
+                }
+                localStorage.setItem('favoriteAnimeIds', JSON.stringify(favoritesGlobal));
+                localStorage.setItem('userData', JSON.stringify(data));
+                
+                renderFavorites(); 
+            };
+        });
+
+        document.querySelectorAll('.list-item-share-btn').forEach(button => {
+            button.onclick = (event) => {
+                event.stopPropagation();
+                const clickedAnimeId = event.currentTarget.dataset.animeId;
+                const clickedEpisodeNum = event.currentTarget.dataset.episodeNum;
+
+                const anime = animeInfoById[parseInt(clickedAnimeId)];
+                if (anime && navigator.share) {
+                    const shareText = `¡He visto ${anime.title} Ova ${clickedEpisodeNum} en VanifruzhiApp! Míralo aquí: ${anime.basePath}${anime.episodeFileNamePrefix}${String(clickedEpisodeNum).padStart(2, '0')}.html`;
+                    navigator.share({
+                        title: `Compartir ${anime.title} Ova ${clickedEpisodeNum}`,
+                        text: shareText,
+                        url: `${anime.basePath}${anime.episodeFileNamePrefix}${String(clickedEpisodeNum).padStart(2, '0')}.html`
+                    }).catch(err => console.error('Error al compartir:', err));
+                } else {
+                    alert("Tu navegador no soporta la función de compartir.");
+                }
+            };
+        });
+    }
+
+    // --- Lógica de Navegación por Pestañas (Tabs) ---
+    const tabButtons = document.querySelectorAll('.tabs-nav .tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const targetTab = button.dataset.tab;
+
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+
+        button.classList.add('active');
+        document.getElementById(`${targetTab}Content`).classList.add('active');
+        
+        if (targetTab === 'favorites') {
+            renderFavorites();
+        } else if (targetTab === 'history') {
+            renderHistory();
+        }
+      });
+    });
+
+    // --- Inicialización al cargar la página ---
+    renderFavorites();
+  });
+</script>
+</body>
+</html>

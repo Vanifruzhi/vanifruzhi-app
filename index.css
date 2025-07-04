@@ -1,0 +1,714 @@
+/* Reset y estilos base */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: #121212;
+    color: #fff;
+    padding-bottom: 70px; /* Espacio para la barra de navegación inferior */
+    margin: 0;
+    overflow-x: hidden; /* Evita scroll horizontal por animaciones de sidebar */
+    font-family: 'Inter', sans-serif; /* APLICAMOS LA NUEVA FUENTE */
+  }
+
+  /* --- HEADER --- */
+  header {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    padding: 0.8rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: background 0.3s ease;
+  }
+
+  header h1 {
+    font-size: 1.4rem;
+    color: white;
+    margin: 0 auto 0 0;
+  }
+
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #sidebarToggle {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    padding: 0 5px;
+  }
+
+  .search-bar {
+    flex-grow: 1;
+    max-width: 300px;
+    margin-right: 10px;
+    position: relative;
+  }
+
+  .search-bar input {
+    width: 100%;
+    padding: 8px 10px 8px 35px;
+    border: none;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 1rem;
+    outline: none;
+  }
+
+  .search-bar input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .search-bar .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.2rem;
+  }
+
+  /* --- SIDE NAVIGATION BAR --- */
+  .side-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    background-color: rgba(26, 26, 26, 0.85);
+    backdrop-filter: blur(8px);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1001;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .side-nav.open {
+    transform: translateX(0);
+  }
+
+  .side-nav-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: transparent;
+    position: relative;
+  }
+
+  .side-nav-logo {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    flex-grow: 1;
+  }
+
+  .side-nav-close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    line-height: 1;
+  }
+  
+  .side-nav-divider {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin: 0 1rem 1rem 1rem;
+  }
+
+
+  .side-nav ul {
+    list-style: none;
+    padding: 0;
+    flex-grow: 1;
+  }
+
+  .side-nav ul li a {
+    display: block;
+    padding: 1rem 1.5rem;
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .side-nav ul li a:hover {
+    background-color: rgba(232, 18, 190, 0.2);
+    color: #e812be;
+  }
+
+  .side-nav-bottom {
+    padding: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .coupon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem;
+    background-color: #e812be;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .coupon-btn:hover {
+    background-color: #af1791;
+  }
+
+  .coupon-btn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    filter: brightness(0) invert(1);
+  }
+
+  .social-icons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 0;
+  }
+
+  .social-icons a img {
+    width: 30px;
+    height: 30px;
+    filter: brightness(0) invert(1);
+    transition: transform 0.2s ease;
+  }
+
+  .social-icons a img:hover {
+    transform: scale(1.1);
+  }
+
+
+  /* Overlay para cuando el sidebar está abierto */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+  }
+
+  .overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  main {
+    max-width: 900px;
+    margin: 60px auto 0 auto;
+    padding: 0 1rem;
+    transition: transform 0.3s ease;
+  }
+
+  /* --- CARRUSEL PRINCIPAL --- */
+  .main-carousel-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-top: 1rem;
+    border-radius: 8px;
+  }
+
+  .main-carousel-slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+
+  .main-carousel-slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .main-carousel-slide img {
+    width: 100%;
+    height: 90vh; /* ALTURA MUCHO MÁS GRANDE */
+    max-height: 900px;
+    object-fit: cover;
+    background-color: transparent;
+    display: block;
+    border-radius: 8px;
+  }
+
+  .main-carousel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .main-carousel-caption {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .main-carousel-genres {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 0.5rem;
+  }
+
+  .carousel-icon-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .carousel-icon-btn {
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .carousel-icon-btn:hover {
+    background: rgba(255,255,255,0.1);
+  }
+
+  .carousel-icon-btn img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+  .carousel-icon-btn.play {
+      background: transparent;
+  }
+  .carousel-icon-btn.play:hover {
+      background: rgba(255,255,255,0.1);
+  }
+
+
+  /* Botones de navegación del carrusel (flechas) */
+  .carousel-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    color: white;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 2rem;
+    line-height: 1;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s ease;
+  }
+  .carousel-nav-btn:hover {
+    background: rgba(255,255,255,0.1);
+  }
+  .carousel-prev {
+    left: 10px;
+  }
+  .carousel-next {
+    right: 10px;
+  }
+
+  /* Indicadores del carrusel (puntos) */
+  .carousel-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+    z-index: 10;
+  }
+  .dot {
+    width: 12px;
+    height: 12px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .dot.active {
+    background: #F47521;
+  }
+
+
+  /* Secciones de anime (Populares ahora, Sugerencias) */
+  .section {
+    margin: 1.5rem 0 0 0;
+  }
+
+  .section h2 {
+    color: #F47521;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 0;
+    padding-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .carousel::-webkit-scrollbar {
+    display: none;
+  }
+  .carousel {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .anime-card {
+    flex: 0 0 auto;
+    width: 140px;
+    text-align: left;
+    position: relative;
+    margin: 0;
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #1e1e1e;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .anime-card img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover; /* <-- Esta es la propiedad correcta */
+  background-color: #1e1e1e; /* Añadimos un fondo por si alguna imagen tarda en cargar */
+  border-radius: 8px;
+}
+
+  .anime-card-info {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+    color: #eee;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+    min-height: 40px;
+  }
+
+  .anime-card-text {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin-right: 5px;
+  }
+
+  .anime-card-title {
+  color: white;
+  font-size: 1rem; /* Un poco más grande */
+  font-weight: 700; /* Más notorio */
+  line-height: 1.2;
+  /* El resto de las propiedades para cortar el texto ya están bien */
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.anime-card-subtitle {
+  font-size: 0.8rem; /* Un poco más legible */
+  color: #aaa; /* Un gris más claro, como en la imagen */
+  margin-top: 4px; /* Un poco más de separación */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+  .anime-card-options-btn {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    z-index: 2;
+  }
+  .anime-card-options-btn:hover {
+    color: white;
+  }
+
+  /* --- POP-UP DE OPCIONES (MENÚ CONTEXTUAL) --- */
+  .options-popup {
+    position: fixed;
+    background-color: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(5px);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    z-index: 1002;
+    list-style: none;
+    padding: 0.5rem 0;
+    display: none;
+    min-width: 180px;
+    max-width: 250px;
+    will-change: transform;
+    transform: translateZ(0); /* Ayuda a que fixed funcione mejor en algunos navegadores/móviles */
+    overflow-y: auto;
+    max-height: 80vh;
+  }
+
+  .options-popup.active {
+    display: block;
+  }
+
+  .options-popup li a {
+    display: block;
+    padding: 0.8rem 1.5rem;
+    color: white;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .options-popup li a:hover {
+    background-color: rgba(232, 18, 190, 0.2);
+    color: #e812be;
+  }
+
+
+  /* --- BOTTOM NAVIGATION BAR --- */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    z-index: 999;
+  }
+
+  .bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+  }
+
+  .bottom-nav a:hover {
+    opacity: 1;
+  }
+
+  .bottom-nav img {
+    width: 25px;
+    height: 25px;
+    filter: brightness(0) invert(1);
+  }
+  .bottom-nav a:hover img {
+    filter: brightness(0) saturate(100%) invert(20%) sepia(80%) saturate(800%) hue-rotate(280deg) brightness(1.2);
+  }
+
+
+  /* Media Queries para Responsive Design */
+  @media (max-width: 767px) {
+    main {
+      max-width: 100%;
+      margin-top: 60px;
+      padding: 0 1rem;
+    }
+
+    .main-carousel-slide img {
+      height: 50vh;
+      max-height: 500px;
+    }
+
+    .main-carousel-caption {
+      font-size: 1.5rem;
+      padding: 0.8rem;
+    }
+
+    .carousel-icon-btn {
+      width: 40px;
+      height: 40px;
+    }
+    .carousel-icon-btn img {
+      width: 20px;
+      height: 20px;
+    }
+    .carousel-icon-group {
+      gap: 10px;
+    }
+
+    .side-nav {
+      width: 200px;
+    }
+    .carousel-nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+    .dot {
+        width: 10px;
+        height: 10px;
+    }
+    .anime-card {
+        width: 130px; /* Ajuste para móviles para que quepan mejor */
+    }
+    .anime-card img {
+        height: 195px; /* Ajuste proporcional */
+    }
+  }
+
+.titulo-neon {
+  color: #fff; /* Texto en color blanco */
+  font-weight: bold;
+  
+  /* Creamos múltiples sombras para simular el brillo del neón */
+  text-shadow: 
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 15px #e812be,
+    0 0 20px #e812be,
+    0 0 25px #e812be;
+}
+
+  @media (max-width: 480px) {
+    header h1 {
+      font-size: 1.2rem;
+    }
+    .search-bar {
+      max-width: 150px;
+    }
+    .search-bar input {
+      padding: 6px 8px 6px 30px;
+      font-size: 0.9rem;
+    }
+    .search-bar .search-icon {
+      font-size: 1rem;
+      left: 8px;
+    }
+  }
+
+/* --- ESTILOS DE LA BARRA DE BÚSQUEDA --- */
+/* Hacemos el contenedor del search-bar relativo para posicionar los resultados */
+.search-bar {
+    position: relative;
+}
+
+.search-results-container {
+    display: none; /* Oculto por defecto */
+    position: absolute;
+    top: 110%; /* Justo debajo de la barra de búsqueda */
+    left: 0;
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(5px);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    z-index: 1100; /* Por encima de otros elementos */
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s ease;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: rgba(232, 18, 190, 0.2);
+}
+
+.search-result-item img {
+    width: 45px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 15px;
+}
+
+.search-result-item span {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.no-results {
+    padding: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+}

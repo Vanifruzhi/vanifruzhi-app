@@ -1,0 +1,26 @@
+{
+  "sinopsis": "Nozomi Egawa y Ryoutaro Shiba son dos nuevos estudiantes de instituto en la ciudad, y se mudan en casas anexas. Nozomi se da cuenta de que Ryoutaro tiene una excelente habilidad de visión y reflejos, y le pide que se una al club del boxeo del instituto, para cumplir el sueño de su hermano de representar a Japón en las Olimpiadas de Barcelona 92.",
+  "episodes": [
+    {
+      "id": 1,
+      "title": "Ova 1: Volumen 1",
+      "description": "El episodio 1 de Nozomi Witches se presenta a Nozomi Egawa y Ryoutaro Shiba, dos nuevos estudiantes de instituto que se mudan a casas contiguas. Nozomi, quien regresa a Japón después de vivir en Nueva Zelanda, descubre que Ryoutaro tiene grandes habilidades de visión y reflejos. Ella lo invita a unirse al club de boxeo del instituto, con la esperanza de que Ryoutaro cumpla el sueño de su hermano de competir en las Olimpiadas de Barcelona 1992. ",
+      "img": "https://pbs.twimg.com/media/GumLjYVWQAAVcRx?format=jpg&name=large",
+      "link": "nozomi-witches01.html"
+    },
+    {
+      "id": 2,
+      "title": "Ova 2: Volumen 2",
+      "description": "Nozomi y Ryotaro en su búsqueda para encontrar un nuevo entrenador para el club de boxeo. Después de que el entrenador anterior renunció, Nozomi se da cuenta de que Ryotaro tiene una visión y reflejos excepcionales, y lo convence para que se una al club. Juntos, buscan un nuevo entrenador, enfrentando diversos obstáculos y descubriendo el secreto de la magia de Nozomi. ",
+      "img": "https://pbs.twimg.com/media/GumLlwKXoAAVK86?format=jpg&name=large",
+      "link": "nozomi-witches02.html"
+    },
+    {
+      "id": 3,
+      "title": "Ova 3: Volumen 3",
+      "description": "N/A",
+      "img": "https://pbs.twimg.com/media/GumhrGnW4AA6kCV?format=jpg&name=large",
+      "link": "nozomi-witches03.html"
+    }
+  ]
+}
